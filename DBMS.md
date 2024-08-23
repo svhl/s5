@@ -247,3 +247,87 @@ c. Count the total number of records in the Readers table.
 d. Display the list of publishers & the number of books published by each publisher.
 
 `SELECT publisher, COUNT(isbn) AS noofbooks FROM books GROUP BY publisher;`
+
+## Day 4
+
+### 16.
+
+Practice of SQL TCL commands like rollback, commit and savepoint.\
+a. Delete all users who have not yet borrowed a book.
+
+`DELETE FROM readers WHERE user_id NOT IN(SELECT user_id FROM readers WHERE user_id IN(SELECT user_id FROM return));`
+
+b. Write a query to undo the above delete query.
+
+`ROLLBACK;`
+
+### 17.
+
+Practice of SQL DCL commands for granting & revoking user privileges.\
+a. Write a query to grant all privileges of Users table to nearby user.
+
+`CREATE TABLE users(userid int);`
+
+`GRANT ALL PRIVILEGES ON users TO u1234567;`
+
+b. Write a query to grant some privileges of Return table to nearby user.
+
+`GRANT SELECT, INSERT, UPDATE ON return TO u1234567;`
+
+c. Write a query to revoke all privileges of Users table from the user.
+
+`REVOKE ALL PRIVILEGES ON users FROM u1234567;`
+
+d. Write a query to revoke some privileges of Return table from the user.`
+
+`REVOKE SELECT, INSERT, UPDATE ON return FROM u1234567;`
+
+### 18.
+
+Creation of views.\
+a. Create a view Reader_VW of Employee table with the following columns.
+
+`CREATE VIEW Reader_VW AS SELECT user_id, lastname, address FROM readers;`
+
+b. Update Reader_VW by changing NY to New York.
+
+`UPDATE Reader_VW SET address = 'New York' WHERE address = 'NY';`
+
+c. Delete the reader Ann from Reader_VW.
+
+`DELETE FROM Reader_VW WHERE lastname = 'Ann';`
+
+d. Delete the view created.
+
+`DROP VIEW Reader_VW;`
+
+### 19.
+
+Implementation of built-in functions in RDBMS.\
+a. Find the value of 16^5.
+
+`SELECT POWER(16, 5) FROM dual;`
+
+b. Find the length of the string "Application".
+
+`SELECT LENGTH("Application") FROM dual;`
+
+c. Find the last day of the current month.
+
+`SELECT LAST_DAY(SYSDATE) FROM dual;`
+
+d. Convert the number 65432 to $65432. Use format mask.
+
+`SELECT TO_CHAR(65432, '$99999') FROM dual;`
+
+e. Display the current system date & time with fractional seconds & timezone.
+
+`SELECT SYSTIMESTAMP FROM dual;`
+
+f. Find the number of book titles available.
+
+`SELECT COUNT(DISTINCT title) FROM books;`
+
+g. Display the due date of entries in Return table in the following format: Friday, 11th August, 2017
+
+`SELECT TO_CHAR(due_date, 'Day, DDth Month, YYYY') FROM return;`
