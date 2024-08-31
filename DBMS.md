@@ -331,3 +331,91 @@ f. Find the number of book titles available.
 g. Display the due date of entries in Return table in the following format: Friday, 11th August, 2017
 
 `SELECT TO_CHAR(due_date, 'Day, DDth Month, YYYY') FROM return;`
+
+## Day 5
+
+### 20.
+
+Implement the following simple PL/SQL programs.\
+a. PL/SQL program to find the factorial of a number.
+
+```
+SET SERVEROUTPUT ON;
+DECLARE
+a number := &a;
+b number := 1;
+c number := 1;
+BEGIN
+WHILE b <= a LOOP
+c := c * b;
+b := b + 1;
+END LOOP;
+DBMS_OUTPUT.PUT_LINE('Factorial = ' || c);
+END;
+/
+```
+
+b. PL/SQL program to reverse a string.
+
+```
+DECLARE
+str varchar(50) := '&str';
+rev varchar(50);
+len number := LENGTH(str);
+BEGIN
+FOR i IN REVERSE 1..len LOOP
+rev := rev || SUBSTR(str, i, 1);
+END LOOP;
+DBMS_OUTPUT.PUT_LINE('Reversed string: ' || rev);
+END;
+/
+```
+
+### 21.
+
+Implementation of various control structures using PL/SQL.\
+a. Write a PL/SQL code block to calculate the area of a circle for a value of radius varying from 5 to 15. Store the radius & the corresponding values of calculated area in an empty table named areas, consisting of 2 columns - radius & area.
+
+`CREATE TABLE areas(radius number, area number);`
+
+```
+DECLARE
+rad number;
+ar number;
+BEGIN
+FOR rad IN 5..15 LOOP
+ar := 3.14 * rad * rad;
+INSERT INTO areas VALUES(rad, ar);
+END LOOP;
+END;
+/
+```
+
+b. Write a PL/SQL code block that will accept an account number from the user, check if the user's balance is less than minimum balance, then deduct 100 from the balance.
+
+`CREATE TABLE accounts(accnum int PRIMARY KEY, balance number);`
+
+`INSERT INTO accounts VALUES(12345, 400);`
+
+```
+DECLARE
+ano number := &ano;
+bal number;
+min number := 500;
+BEGIN
+SELECT balance INTO bal FROM accounts WHERE accnum = ano;
+IF bal < min THEN
+bal := bal - 100;
+UPDATE accounts SET balance = bal WHERE accnum = ano;
+DBMS_OUTPUT.PUT_LINE('New balance = ' || bal);
+ELSE
+DBMS_OUTPUT.PUT_LINE('Balance greater than minimum balance');
+END IF;
+EXCEPTION
+WHEN NO_DATA_FOUND THEN
+DBMS_OUTPUT.PUT_LINE('Error: Account number doesn't exist');
+WHEN OTHERS THEN
+DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+END;
+/
+```
