@@ -18,17 +18,16 @@ struct file
 };
 
 void main()
-{
-	struct block b[50];
-	struct file f[50];
+{	
+	int remblocks, nb = 0, nf = 0;
+	printf("Enter total no. of blocks:\n");
+	scanf("%d", &remblocks);
+	struct block b[remblocks];
+	struct file f[remblocks];
 	
-	int remblocks = 50, nb = 0, nf = 0, n;
-	printf("Enter no. of files:\n");
-	scanf("%d", &n);
-	
-	for(int i = 0; i < n; i++)
+	while(1)
 	{
-		char n[50];
+		char n[50], ch;
 		int s;
 		printf("Enter name of file:\n");
 		scanf(" %[^\n]", n);
@@ -56,6 +55,14 @@ void main()
 			
 			b[nb].nextblock = -1;
 			nb++;
+		}
+		
+		printf("Do you want to enter more files? (y/n):\n");
+		scanf(" %c", &ch);
+		
+		if(ch == 'N' || ch == 'n')
+		{
+			break;
 		}
 	}
 	
