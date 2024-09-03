@@ -38,8 +38,39 @@ void main()
 			char name[50];
 			printf("Enter file name:\n");
 			scanf(" %[^\n]", name);
-			strcpy(sl.f[sl.count].name, name);
-			sl.count++;
+			int flag = 0, found = 0;
+			
+			for(int i = 0; name[i] != '\0'; i++)\
+			{
+				 if(name[i] == '.')
+				 {
+				 	flag = 1;
+				 }
+			}
+			
+			if(flag == 0)
+			{
+				printf("File should have an extension\n");
+			}
+			
+			else
+			{	
+				for(int i = 0; i < sl.count; i++)
+				{
+					if(strcmp(sl.f[i].name, name) == 0)
+					{
+						printf("File with same name already exists\n");
+						found = 1;
+						exit;
+					}
+				}
+				
+				if(found == 0)
+				{
+					strcpy(sl.f[sl.count].name, name);
+					sl.count++;
+				}
+			}
 		}
 		
 		else if(ch == 2)
@@ -68,6 +99,7 @@ void main()
 			else
 			{
 				char name[50];
+				int flag = 0;
 				printf("Enter file to search:\n");
 				scanf(" %[^\n]", name);
 				int found = 0;
@@ -76,17 +108,13 @@ void main()
 				{
 					if(strcmp(sl.f[i].name, name) == 0)
 					{
+						printf("File found\n");
 						found = 1;
 						break;
 					}
 				}
 				
-				if(found == 1)
-				{
-					printf("File found\n");
-				}
-				
-				else
+				if(found == 0)
 				{
 					printf("File not found\n");
 				}
@@ -116,17 +144,13 @@ void main()
 							strcpy(sl.f[j].name, sl.f[j+1].name);
 						}
 						
+						printf("File deleted\n");
 						found = 1;
 						sl.count--;
 					}
 				}
 				
-				if(found == 1)
-				{
-					printf("File(s) deleted\n");
-				}
-				
-				else
+				if(found == 0)
 				{
 					printf("File not found\n");
 				}

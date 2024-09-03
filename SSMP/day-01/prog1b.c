@@ -47,9 +47,24 @@ void main()
 			char name[50];
 			printf("Enter directory name:\n");
 			scanf(" %[^\n]", name);
-			strcpy(tl.d[tl.count].name, name);
-			tl.d[tl.count].count = 0;
-			tl.count++;
+			int found = 0;
+			
+			for(int i = 0; i < tl.count; i++)
+			{
+				if(strcmp(tl.d[i].name, name) == 0)
+				{
+					printf("Directory with same name already exists\n");
+					found = 1;
+					exit;
+				}
+			}
+			
+			if(found == 0)
+			{
+				strcpy(tl.d[tl.count].name, name);
+				tl.d[tl.count].count = 0;
+				tl.count++;
+			}
 		}
 		
 		else if(ch == 2)
@@ -59,21 +74,37 @@ void main()
 			scanf(" %[^\n]", dname);
 			printf("Enter file name:\n");
 			scanf(" %[^\n]", fname);
-			int found = 0;
-
-			for(int i = 0; i < tl.count; i++)
+			int flag = 0, found = 0;
+			
+			for(int i = 0; fname[i] != '\0'; i++)\
 			{
-				if(strcmp(tl.d[i].name, dname) == 0)
-				{
-					strcpy(tl.d[i].f[tl.d[i].count].name, fname);
-					tl.d[i].count++;
-					found = 1;
-				}
+				 if(fname[i] == '.')
+				 {
+				 	flag = 1;
+				 }
 			}
-
-			if(found == 0)
+			
+			if(flag == 0)
 			{
-				printf("directory doesn't exist\n");
+				printf("File should have an extension\n");
+			}
+			
+			else
+			{
+				for(int i = 0; i < tl.count; i++)
+				{
+					if(strcmp(tl.d[i].name, dname) == 0)
+					{
+						strcpy(tl.d[i].f[tl.d[i].count].name, fname);
+						tl.d[i].count++;
+						found = 1;
+					}
+				}
+
+				if(found == 0)
+				{
+					printf("Directory doesn't exist\n");
+				}
 			}
 		}
 		
