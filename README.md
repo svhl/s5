@@ -10,7 +10,7 @@ Make changes to comments, file names, etc. if you're gonna use these.
 | :-                                                        | :-        | :-                                    |
 | [1](https://github.com/svhl/s5/tree/main/SSMP/day-01)     | 13 Aug '24| File organization                     |
 | [2](https://github.com/svhl/s5/tree/main/SSMP/day-02)     | 24 Aug '24| File allocation                       |
-| [3](https://github.com/svhl/s5/tree/main/SSMP/day-03)     | 03 Aug '24| Paging                                |
+| [3](https://github.com/svhl/s5/tree/main/SSMP/day-03)     | 03 Sep '24| Paging                                |
 
 ### DBMS:
 
