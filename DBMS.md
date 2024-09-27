@@ -339,8 +339,9 @@ g. Display the due date of entries in Return table in the following format: Frid
 Implement the following simple PL/SQL programs.\
 a. PL/SQL program to find the factorial of a number.
 
+`SET SERVEROUTPUT ON;`
+
 ```
-SET SERVEROUTPUT ON;
 DECLARE
 a number := &a;
 b number := 1;
@@ -413,7 +414,7 @@ DBMS_OUTPUT.PUT_LINE('Balance greater than minimum balance');
 END IF;
 EXCEPTION
 WHEN NO_DATA_FOUND THEN
-DBMS_OUTPUT.PUT_LINE('Error: Account number doesn't exist');
+DBMS_OUTPUT.PUT_LINE('Error: Account number does not exist');
 WHEN OTHERS THEN
 DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
 END;
