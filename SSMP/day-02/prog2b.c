@@ -10,7 +10,7 @@ struct file
 {
 	char name[50];
 	int noofblocks;
-	//int startblock;
+	int index;
 	int allocated[50];
 };
 
@@ -42,7 +42,7 @@ void main()
 		{
 			remblocks -= blocks;
 			strcpy(f[count].name, name);
-			/*f[count].startblock = rand() % (totblocks + 1);
+			f[count].index = rand() % (totblocks + 1);
 
 			do
 			{
@@ -50,9 +50,9 @@ void main()
 
 				for(int i = 0; i < listcount; i++)
 				{
-					if(usedblocks[i] == f[count].startblock)
+					if(usedblocks[i] == f[count].index)
 					{
-						f[count].startblock = rand() % (totblocks + 1);
+						f[count].index = rand() % (totblocks + 1);
 						flag = 1;
 						break;
 					}
@@ -60,8 +60,8 @@ void main()
 
 			} while(flag == 1);
 
-			usedblocks[listcount] = f[count].startblock;
-			listcount++;*/			
+			usedblocks[listcount] = f[count].index;
+			listcount++;		
 			f[count].noofblocks = blocks;
 
 			for(int i = 0; i < blocks; i++)
@@ -99,11 +99,12 @@ void main()
 		}
 	}
 	
-	printf("File name\tFile size\tBlocks allocated\n");
+	printf("File name\tFile size\tIndex block\tBlocks allocated\n");
 	
 	for(int i = 0; i < count; i++)
 	{
 		printf("%s\t\t%d\t\t", f[i].name, f[i].noofblocks);
+		printf("%d\t\t", f[i].index);
 	
 		for(int j = 0; j < f[i].noofblocks; j++)
 		{
