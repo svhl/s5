@@ -99,12 +99,11 @@ void main()
 		}
 	}
 	
-	printf("File name\tFile size\tIndex block\tBlocks allocated\n");
+	printf("Index\tFile name\tFile size\tBlocks allocated\n");
 	
 	for(int i = 0; i < count; i++)
 	{
-		printf("%s\t\t%d\t\t", f[i].name, f[i].noofblocks);
-		printf("%d\t\t", f[i].index);
+		printf("%d\t%s\t\t%d\t\t", f[i].index, f[i].name, f[i].noofblocks);
 	
 		for(int j = 0; j < f[i].noofblocks; j++)
 		{
