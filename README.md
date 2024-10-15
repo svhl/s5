@@ -14,6 +14,7 @@ Make changes to comments, file names, etc. if you're gonna use these.
 | [4](https://github.com/svhl/s5/tree/main/SSMP/day-04)     | 24 Sep '24| Familiarization of MASM               |
 | [5](https://github.com/svhl/s5/tree/main/SSMP/day-05)     | 24 Sep '24| Arithmetic operations using 8086      |
 | [6](https://github.com/svhl/s5/tree/main/SSMP/day-06)     | 01 Oct '24| Pass 1 of two pass assembler          |
+| [7](https://github.com/svhl/s5/tree/main/SSMP/day-07)     | 08 Oct '24| Pass 2 of two pass assembler          |
 
 ### DBMS:
 
