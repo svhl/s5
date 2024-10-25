@@ -425,6 +425,7 @@ END;
 
 ### 22.
 
+Creation of procedures & functions.
 a. Create a procedure which decreases the fine of the given reader from the Readers table by 5% if the total fine is greater than 100.
 
 `ALTER TABLE readers ADD fine number DEFAULT 0;`
@@ -513,6 +514,180 @@ retdate varchar2(100);
 BEGIN
 retdate := retdateofbooks('L0005');
 DBMS_OUTPUT.PUT_LINE(retdate);
+END;
+/
+```
+
+## Day 7
+
+### 23.
+
+Create a cursor which updates the fine of a reader as follows:\
+i. If fine < 100 then update fine to 100.
+
+```
+DECLARE
+cur_fine return.fine%type;
+CURSOR c1 IS
+SELECT fine FROM return WHERE fine < 100 FOR UPDATE;
+BEGIN
+OPEN c1;
+LOOP
+FETCH c1 INTO cur_fine;
+EXIT WHEN c1%NOTFOUND;
+UPDATE return SET fine = 100 WHERE CURRENT OF c1;
+END LOOP;
+CLOSE c1;
+END;
+/
+```
+
+ii. If fine >= 100 and < 150 then update fine to 150.
+
+```
+DECLARE
+cur_fine return.fine%type;
+CURSOR c1 IS
+SELECT fine FROM return WHERE fine >= 100 AND fine < 150 FOR UPDATE;
+BEGIN
+OPEN c1;
+LOOP
+FETCH c1 INTO cur_fine;
+EXIT WHEN c1%NOTFOUND;
+UPDATE return SET fine = 150 WHERE CURRENT OF c1;
+END LOOP;
+CLOSE c1;
+END;
+/
+```
+
+iii. If fine >= 150 and < 200 then update fine to 200.
+
+```
+DECLARE
+cur_fine return.fine%type;
+CURSOR c1 IS
+SELECT fine FROM return WHERE fine >= 150 AND fine < 200 FOR UPDATE;
+BEGIN
+OPEN c1;
+LOOP
+FETCH c1 INTO cur_fine;
+EXIT WHEN c1%NOTFOUND;
+UPDATE return SET fine = 200 WHERE CURRENT OF c1;
+END LOOP;
+CLOSE c1;
+END;
+/
+```
+
+iv. Count the no. of records that have been updated.
+
+```
+DECLARE
+cur_fine return.fine%type;
+cur_count NUMBER := 0;
+CURSOR c1 IS
+SELECT fine FROM return;
+BEGIN
+OPEN c1;
+LOOP
+FETCH c1 INTO cur_fine;
+EXIT WHEN c1%NOTFOUND;
+IF cur_fine <= 200 THEN
+cur_count := cur_count + 1;
+END IF;
+END LOOP;
+CLOSE c1;
+dbms_output.put_line('No. of records updated: ' || cur_count);
+END;
+/
+```
+
+### 24.
+
+Create a cursor to update the due date for a particular book to 15 days if more than 3 reserves exit.
+
+`INSERT INTO return VALUES('29-OCT-2024', NULL, NULL, '29-NOV-2024', 0, 'L0004', 56789, NULL);`
+
+```
+DECLARE
+r_isbn return.isbn%type;
+CURSOR c1 IS
+SELECT isbn FROM return GROUP BY isbn HAVING COUNT(reserve_date) > 3;
+BEGIN
+OPEN c1;
+LOOP
+FETCH c1 INTO r_isbn;
+EXIT WHEN c1%NOTFOUND;
+UPDATE return SET due_date = reserve_date + 15 WHERE isbn = r_isbn;
+END LOOP;
+CLOSE c1;
+END;
+/
+```
+
+### 25.
+
+Create a cursor to increase the no. of copies of books as follows:\
+i. If no. of copies < 5 then update to 8.
+
+```
+DECLARE
+v_isbn books.isbn%type;
+v_no_of_copies books.noofcopies%type;
+CURSOR c1 IS 
+SELECT noofcopies FROM books FOR UPDATE;
+BEGIN
+OPEN c1;
+LOOP
+FETCH c1 INTO v_no_of_copies;
+EXIT when c1%NOTFOUND;
+IF v_no_of_copies < 5 THEN
+UPDATE books SET noofcopies = 8 WHERE CURRENT OF c1;
+END IF;
+END LOOP;
+END;
+/
+```
+
+ii. If no. of copies < 10 then update to 12.
+
+```
+DECLARE
+v_isbn books.isbn%type;
+v_no_of_copies books.noofcopies%type;
+CURSOR c1 IS 
+SELECT noofcopies FROM books FOR UPDATE;
+BEGIN
+OPEN c1;
+LOOP
+FETCH c1 INTO v_no_of_copies;
+EXIT when c1%NOTFOUND;
+IF v_no_of_copies < 10 THEN
+UPDATE books SET noofcopies = 12 WHERE CURRENT OF c1;
+END IF;
+END LOOP;
+END;
+/
+```
+
+iii. If no. of copies < 15 then update to 17.
+
+```
+DECLARE
+v_isbn books.isbn%type;
+v_no_of_copies books.noofcopies%type;
+CURSOR c1 IS 
+SELECT noofcopies FROM books FOR UPDATE;
+BEGIN
+OPEN c1;
+LOOP
+FETCH c1 INTO v_no_of_copies;
+EXIT when c1%NOTFOUND;
+IF v_no_of_copies < 15 THEN
+UPDATE books SET noofcopies = 17 WHERE CURRENT OF c1;
+END IF;
+END LOOP;
 END;
 /
 ```
