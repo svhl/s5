@@ -420,3 +420,99 @@ DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
 END;
 /
 ```
+
+## Day 6
+
+### 22.
+
+a. Create a procedure which decreases the fine of the given reader from the Readers table by 5% if the total fine is greater than 100.
+
+`ALTER TABLE readers ADD fine number DEFAULT 0;`
+
+`UPDATE return SET fine = 110 WHERE user_id = 'L0004';`
+
+`UPDATE readers SET fine = 200 WHERE user_id = 'L0004';`
+
+```
+CREATE OR REPLACE PROCEDURE finereplace
+AS
+BEGIN
+UPDATE readers SET fine = fine - (0.05 * fine) WHERE user_id IN(SELECT user_id FROM return GROUP BY user_id HAVING SUM(fine) > 100);
+END;
+/
+```
+
+```
+BEGIN
+finereplace;
+END;
+/
+```
+
+b. Write a procedure to add "not returned" status to the books which are not returned after the due date.
+
+`ALTER TABLE return ADD status varchar(50);`
+
+```
+CREATE OR REPLACE PROCEDURE returnstatus
+AS
+BEGIN
+UPDATE return SET status = 'not returned' WHERE return_date IS NULL AND due_date < (SELECT SYSDATE FROM DUAL);
+END;
+/
+```
+
+```
+BEGIN
+returnstatus;
+END;
+/
+```
+
+c. Write a function which returns the no. of copies of book given the author ID.
+
+```
+CREATE OR REPLACE FUNCTION copies(auth varchar2)
+RETURN varchar2
+IS
+noc int;
+BEGIN
+SELECT SUM(noofcopies) INTO noc FROM books WHERE authorno = auth GROUP BY authorno;
+RETURN ('No. of copies: ' || noc);
+END;
+/
+```
+
+```
+DECLARE
+noc varchar2(50);
+BEGIN
+noc := copies('A002');
+DBMS_OUTPUT.PUT_LINE(noc);
+END;
+/
+```
+
+d. Create a function which returns the date of return of all books for a particular reader if the user ID is given.
+
+```
+CREATE OR REPLACE FUNCTION retdateofbooks(uid varchar2)
+RETURN varchar2
+IS
+retdate varchar2(100);
+BEGIN
+SELECT return_date INTO retdate FROM return WHERE user_id = uid AND ROWNUM = 1;
+RETURN('Return date: ' || retdate);
+END;
+/
+```
+
+```
+DECLARE
+retdate varchar2(100);
+BEGIN
+retdate := retdateofbooks('L0005');
+DBMS_OUTPUT.PUT_LINE(retdate);
+END;
+/
+```
