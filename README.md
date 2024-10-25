@@ -26,6 +26,9 @@ Make changes to comments, file names, etc. if you're gonna use these.
 | [4](https://github.com/svhl/s5/blob/main/DBMS.md#day-4)   | 23 Aug '24| TCL, DCL, views & built-in functions  |
 | [5](https://github.com/svhl/s5/blob/main/DBMS.md#day-5)   | 30 Aug '24| PL/SQL                                |
 | [6](https://github.com/svhl/s5/blob/main/DBMS.md#day-6)   | 27 Sep '24| Procedures & functions                |
+| [7](https://github.com/svhl/s5/blob/main/DBMS.md#day-7)   | 04 Oct '24| Cursor                                |
+| [8](https://github.com/svhl/s5/blob/main/DBMS.md#day-8)   | 04 Oct '24| Trigger                               |
+| [9](https://github.com/svhl/s5/blob/main/DBMS.md#day-9)   | 25 Oct '24| Package                               |
 
 ## How to use
 
