@@ -703,14 +703,14 @@ CREATE OR REPLACE TRIGGER check_duedate
 AFTER UPDATE ON return
 FOR EACH ROW
 BEGIN
-IF :NEW.due_date < sysdate THEN
+IF :NEW.due_date < SYSDATE THEN
 RAISE_APPLICATION_ERROR(-20001, 'Error: The book is past due date');
 END IF;
 END;
 /
 ```
 
-`UPDATE return SET due_date = sysdate - 1 WHERE user_id = 'L0001';`
+`UPDATE return SET due_date = SYSDATE - 1 WHERE user_id = 'L0001';`
 
 ### 27.
 
@@ -792,3 +792,54 @@ END;
 ```
 
 `INSERT INTO return VALUES('12-AUG-2024', NULL, '20-SEP-2024', '18-OCT-2024', 0, 'L0001', 16543, 'not returned');`
+
+## Day 9
+
+### 31
+
+Create a package which contains:\
+i. A procedure to add new books to library\
+ii. A function to increase the due date by 5 days
+
+```
+CREATE OR REPLACE library_package AS
+PROCEDURE add_book(p_book_id IN number, p_title IN varchar2, p_author IN varchar2, p_noofcopies IN number, p_publisher IN varchar2);
+FUNCTION extend_due_date(p_due_date IN date) RETURN DATE;
+END library_package;
+/
+```
+
+```
+CREATE OR REPLACE PACKAGE BODY library_package AS
+PROCEDURE add_book(p_book_id IN number, p_title IN varchar2, p_author IN varchar2, p_noofcopies IN number, p_publisher IN varchar2) IS
+BEGIN
+INSERT INTO books(isbn, title, authorno, noofcopies, publisher) VALUES (p_book_id, p_title, p_author, p_noofcopies, p_publisher);
+COMMIT;
+END add_book;
+FUNCTION extend_due_date(p_due_date IN date) RETURN DATE IS
+v_new_due_date date;
+BEGIN
+v_new_due_date := p_due_date + 5;
+RETURN
+v_new_due_date;
+END extend_due_date;
+END library_package;
+/
+```
+
+```
+BEGIN
+library_package.add_book(67890, 'The Great Gatsby', 'A001', 5, 'MK');
+END;
+/
+```
+
+```
+DECLARE
+v_new_due_date date;
+BEGIN
+v_new_due_date := library_package.extend_due_date(SYSDATE);
+DBMS_OUTPUT.PUT_LINE('New due date: ' || v_new_due_date);
+END;
+/
+```
