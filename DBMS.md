@@ -691,3 +691,104 @@ END LOOP;
 END;
 /
 ```
+
+## Day 8
+
+### 26.
+
+Create a trigger to check if due date of a book exceeds the current date.
+
+```
+CREATE OR REPLACE TRIGGER check_duedate
+AFTER UPDATE ON return
+FOR EACH ROW
+BEGIN
+IF :NEW.due_date < sysdate THEN
+RAISE_APPLICATION_ERROR(-20001, 'Error: The book is past due date');
+END IF;
+END;
+/
+```
+
+`UPDATE return SET due_date = sysdate - 1 WHERE user_id = 'L0001';`
+
+### 27.
+
+Create a trigger to check if the total fine for a reader is greater than 500.
+
+```
+CREATE OR REPLACE TRIGGER check_fine
+BEFORE UPDATE ON return
+DECLARE
+sum_fine number;
+BEGIN
+SELECT SUM(fine) INTO sum_fine FROM return WHERE user_id IN (SELECT DISTINCT user_id FROM return);
+IF sum_fine > 500 THEN
+RAISE_APPLICATION_ERROR(-20001, 'Error: Total fine exceeds 500');
+END IF;
+END;
+/
+```
+
+`UPDATE RETURN SET fine = 60 WHERE user_id = 'L0001';`
+
+### 28.
+
+Create a trigger to check if there exists more than 2 reserves for a particular book.
+
+```
+CREATE OR REPLACE TRIGGER check_reserves_count
+AFTER INSERT OR UPDATE ON return
+DECLARE
+reserve_count number;
+BEGIN
+SELECT COUNT(*) INTO reserve_count FROM return WHERE isbn IN(SELECT DISTINCT isbn FROM return WHERE rowid IN(SELECT MAX(rowid) FROM return GROUP BY isbn));
+IF reserve_count > 2 THEN
+RAISE_APPLICATION_ERROR(-20001, 'Error: More than 2 reserves exist for book');
+END IF;
+END;
+/
+```
+
+`INSERT INTO return VALUES('16-AUG-2024', NULL, '16-AUG-2024', '30-AUG-2024', 0, 'L0001', 56789, 'not returned');`
+
+### 29.
+
+Create a trigger to check if a particular reader has given only maximum 3 reserves in total.
+
+```
+CREATE OR REPLACE TRIGGER count_book_reservations
+BEFORE INSERT OR UPDATE ON return
+DECLARE
+reservation_count number;
+BEGIN
+SELECT COUNT(*) INTO reservation_count FROM return;
+IF reservation_count >= 3 THEN
+RAISE_APPLICATION_ERROR(-20003, 'Error: Can't reserve more than 3 books');
+END IF;
+END;
+/
+```
+
+`INSERT INTO return VALUES('18-SEP-2024', NULL, '20-SEP-2024', '18-OCT-2024', 0, 'L0006', 16543, 'not returned');`
+
+### 30.
+
+Create a trigger to check whether each reader has made only one reserve in a day.
+
+```
+CREATE OR REPLACE TRIGGER count_daily_reservations
+BEFORE INSERT OR UPDATE ON return
+FOR EACH ROW
+DECLARE
+reservation_count number;
+BEGIN
+SELECT COUNT(*) INTO reservation_count FROM return WHERE user_id = :NEW.user_id AND reserve_date = :NEW.reserve_date;
+IF reservation_count >= 1 THEN
+RAISE_APPLICATION_ERROR(-20003, 'Error: Can only reserve one book per day');
+END IF;
+END;
+/
+```
+
+`INSERT INTO return VALUES('12-AUG-2024', NULL, '20-SEP-2024', '18-OCT-2024', 0, 'L0001', 16543, 'not returned');`
