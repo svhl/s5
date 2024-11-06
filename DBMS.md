@@ -802,7 +802,7 @@ i. A procedure to add new books to library\
 ii. A function to increase the due date by 5 days
 
 ```
-CREATE OR REPLACE library_package AS
+CREATE OR REPLACE PACKAGE library_package AS
 PROCEDURE add_book(p_book_id IN number, p_title IN varchar2, p_author IN varchar2, p_noofcopies IN number, p_publisher IN varchar2);
 FUNCTION extend_due_date(p_due_date IN date) RETURN DATE;
 END library_package;
