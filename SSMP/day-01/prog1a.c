@@ -99,7 +99,6 @@ void main()
 			else
 			{
 				char name[50];
-				int flag = 0;
 				printf("Enter file to search:\n");
 				scanf(" %[^\n]", name);
 				int found = 0;
