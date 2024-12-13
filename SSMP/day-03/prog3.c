@@ -35,7 +35,8 @@ void main()
 	while(1)
 	{
 		printf("Menu\n");
-		printf("1. Insert\t2. Delete\t3. Display PCB\t4. Exit\n");
+		printf("1. Insert\t2. Delete\t3. Display PCB\n");
+		printf("Any other value to exit\n");
 		printf("Enter choice: ");
 		scanf("%d", &ch);
 		
@@ -153,6 +154,11 @@ void main()
 				
 				printf("\n");
 			}
+		}
+
+		else
+		{
+			return;
 		}
 	}
 }
