@@ -23,7 +23,7 @@ void main()
 	while(1)
 	{
 		char name[50], ch;
-		int blocks, temp;
+		int blocks;
 		printf("Enter name of file:\n");
 		scanf(" %[^\n]", name);
 		printf("Enter no. of blocks:\n");
@@ -40,15 +40,13 @@ void main()
 			strcpy(f[count].name, name);
 			f[count].startblock = start;
 			f[count].noofblocks = blocks;
-			temp = start;
 
 			for(int i = 0; i < blocks; i++)
 			{
-				f[count].allocated[i] = temp;
-				temp++;
+				f[count].allocated[i] = start;
+				start++;
 			}
 
-			start += blocks;
 			count++;
 		}
 		
