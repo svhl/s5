@@ -20,7 +20,7 @@ void main()
 	printf("Enter total no. of blocks:\n");
 	scanf("%d", &remblocks);
 	totblocks = remblocks;
-	int usedblocks[remblocks], listcount = 0, flag = 1;
+	int usedblocks[remblocks], listcount = 0, flag;
 	struct file f[50];
 	srand(time(0));
 	
