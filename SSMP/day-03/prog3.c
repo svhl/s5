@@ -21,7 +21,7 @@ void main()
 	printf("Enter frame size (in Kb): ");
 	scanf("%d", &frsize);
 	totfr = (totmem + frsize - 1) / frsize;
-	printf("Total no. of franes available: %d\n", totfr);
+	printf("Total no. of frames available: %d\n", totfr);
 	int allocated[totfr];
 	
 	for(int i = 0; i < totfr; i++)
