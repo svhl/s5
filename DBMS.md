@@ -811,12 +811,15 @@ END library_package;
 
 ```
 CREATE OR REPLACE PACKAGE BODY library_package AS
-PROCEDURE add_book(p_book_id IN number, p_title IN varchar2, p_author IN varchar2, p_noofcopies IN number, p_publisher IN varchar2) IS
+PROCEDURE add_book(p_book_id IN number, p_title IN varchar2, p_author IN varchar2, p_noofcopies IN number, p_publisher IN varchar2)
+IS
 BEGIN
 INSERT INTO books(isbn, title, authorno, noofcopies, publisher) VALUES (p_book_id, p_title, p_author, p_noofcopies, p_publisher);
 COMMIT;
 END add_book;
-FUNCTION extend_due_date(p_due_date IN date) RETURN DATE IS
+FUNCTION extend_due_date(p_due_date IN date)
+RETURN DATE
+IS
 v_new_due_date date;
 BEGIN
 v_new_due_date := p_due_date + 5;
