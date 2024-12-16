@@ -15,6 +15,9 @@ Make changes to comments, file names, etc. if you're gonna use these.
 | [5](https://github.com/svhl/s5/tree/main/SSMP/day-05)     | 24 Sep '24| Arithmetic operations using 8086      |
 | [6](https://github.com/svhl/s5/tree/main/SSMP/day-06)     | 01 Oct '24| Pass 1 of two pass assembler          |
 | [7](https://github.com/svhl/s5/tree/main/SSMP/day-07)     | 08 Oct '24| Pass 2 of two pass assembler          |
+| [8](https://github.com/svhl/s5/tree/main/SSMP/day-09)     | 22 Oct '24| Operations using 8086                 |
+| [9](https://github.com/svhl/s5/tree/main/SSMP/day-09)     | 12 Nov '24| Absolute and relocating loader        |
+| [10](https://github.com/svhl/s5/tree/main/SSMP/day-10)    | 12 Nov '24| Arithmetic operations using 8051      |
 
 ### DBMS:
 
