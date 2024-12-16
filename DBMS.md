@@ -523,77 +523,30 @@ END;
 ### 23.
 
 Create a cursor which updates the fine of a reader as follows:\
-i. If fine < 100 then update fine to 100.
-
-```
-DECLARE
-cur_fine return.fine%type;
-CURSOR c1 IS
-SELECT fine FROM return WHERE fine < 100 FOR UPDATE;
-BEGIN
-OPEN c1;
-LOOP
-FETCH c1 INTO cur_fine;
-EXIT WHEN c1%NOTFOUND;
-UPDATE return SET fine = 100 WHERE CURRENT OF c1;
-END LOOP;
-CLOSE c1;
-END;
-/
-```
-
-ii. If fine >= 100 and < 150 then update fine to 150.
-
-```
-DECLARE
-cur_fine return.fine%type;
-CURSOR c1 IS
-SELECT fine FROM return WHERE fine >= 100 AND fine < 150 FOR UPDATE;
-BEGIN
-OPEN c1;
-LOOP
-FETCH c1 INTO cur_fine;
-EXIT WHEN c1%NOTFOUND;
-UPDATE return SET fine = 150 WHERE CURRENT OF c1;
-END LOOP;
-CLOSE c1;
-END;
-/
-```
-
-iii. If fine >= 150 and < 200 then update fine to 200.
-
-```
-DECLARE
-cur_fine return.fine%type;
-CURSOR c1 IS
-SELECT fine FROM return WHERE fine >= 150 AND fine < 200 FOR UPDATE;
-BEGIN
-OPEN c1;
-LOOP
-FETCH c1 INTO cur_fine;
-EXIT WHEN c1%NOTFOUND;
-UPDATE return SET fine = 200 WHERE CURRENT OF c1;
-END LOOP;
-CLOSE c1;
-END;
-/
-```
-
+i. If fine < 100 then update fine to 100.\
+ii. If fine >= 100 and < 150 then update fine to 150.\
+iii. If fine >= 150 and < 200 then update fine to 200.\
 iv. Count the no. of records that have been updated.
 
 ```
 DECLARE
-cur_fine return.fine%type;
-cur_count NUMBER := 0;
 CURSOR c1 IS
-SELECT fine FROM return;
+SELECT user_id, fine FROM return WHERE fine < 200;
+cur_rec c1%rowtype;
+cur_count int := 0;
 BEGIN
 OPEN c1;
 LOOP
-FETCH c1 INTO cur_fine;
+FETCH c1 INTO cur_rec;
 EXIT WHEN c1%NOTFOUND;
-IF cur_fine <= 200 THEN
+IF cur_rec.fine < 100 THEN
+UPDATE return SET fine = 100 WHERE user_id = cur_rec.user_id;
+cur_count := cur_count + 1;
+ELSIF cur_rec.fine < 150 THEN
+UPDATE return SET fine = 150 WHERE user_id = cur_rec.user_id;
+cur_count := cur_count + 1;
+ELSIF cur_rec.fine < 200 THEN
+UPDATE return SET fine = 200 WHERE user_id = cur_rec.user_id;
 cur_count := cur_count + 1;
 END IF;
 END LOOP;
@@ -629,65 +582,29 @@ END;
 ### 25.
 
 Create a cursor to increase the no. of copies of books as follows:\
-i. If no. of copies < 5 then update to 8.
-
-```
-DECLARE
-v_isbn books.isbn%type;
-v_no_of_copies books.noofcopies%type;
-CURSOR c1 IS 
-SELECT noofcopies FROM books FOR UPDATE;
-BEGIN
-OPEN c1;
-LOOP
-FETCH c1 INTO v_no_of_copies;
-EXIT when c1%NOTFOUND;
-IF v_no_of_copies < 5 THEN
-UPDATE books SET noofcopies = 8 WHERE CURRENT OF c1;
-END IF;
-END LOOP;
-END;
-/
-```
-
-ii. If no. of copies < 10 then update to 12.
-
-```
-DECLARE
-v_isbn books.isbn%type;
-v_no_of_copies books.noofcopies%type;
-CURSOR c1 IS 
-SELECT noofcopies FROM books FOR UPDATE;
-BEGIN
-OPEN c1;
-LOOP
-FETCH c1 INTO v_no_of_copies;
-EXIT when c1%NOTFOUND;
-IF v_no_of_copies < 10 THEN
-UPDATE books SET noofcopies = 12 WHERE CURRENT OF c1;
-END IF;
-END LOOP;
-END;
-/
-```
-
+i. If no. of copies < 5 then update to 8.\
+ii. If no. of copies < 10 then update to 12.\
 iii. If no. of copies < 15 then update to 17.
 
 ```
 DECLARE
-v_isbn books.isbn%type;
-v_no_of_copies books.noofcopies%type;
 CURSOR c1 IS 
-SELECT noofcopies FROM books FOR UPDATE;
+SELECT noofcopies FROM books;
+cur_rec c1%rowtype;
 BEGIN
 OPEN c1;
 LOOP
-FETCH c1 INTO v_no_of_copies;
+FETCH c1 INTO cur_rec;
 EXIT when c1%NOTFOUND;
-IF v_no_of_copies < 15 THEN
-UPDATE books SET noofcopies = 17 WHERE CURRENT OF c1;
+IF cur_rec.noofcopies < 5 THEN
+UPDATE books SET noofcopies = 8 WHERE isbn = cur_rec.isbn;
+ELSIF cur_rec.noofcopies < 10 THEN
+UPDATE books SET noofcopies = 12 WHERE isbn = cur_rec.isbn;
+ELSIF cur_rec.noofcopies < 15 THEN
+UPDATE books SET noofcopies = 17 WHERE isbn = cur_rec.isbn;
 END IF;
 END LOOP;
+CLOSE c1;
 END;
 /
 ```
